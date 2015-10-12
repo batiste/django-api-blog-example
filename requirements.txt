@@ -1,0 +1,5 @@
+Django==1.8.5
+django-ckeditor==5.0.2
+django-flat-theme==1.1.1
+djangorestframework==3.2.4
+wsgiref==0.1.2
