@@ -1,21 +1,31 @@
 from django.contrib import admin
-from blog.models import Post
+from blog.models import Post, Comment, Translation
 from django import forms
 from ckeditor.widgets import CKEditorWidget
 
-class PostAdminForm(forms.ModelForm):
+class TranslationAdminForm(forms.ModelForm):
     content = forms.CharField(widget=CKEditorWidget())
     class Meta:
-        model = Post
-        fields = ('title', 'author', 'content')
+        model = Translation
+        fields = ('language', 'title', 'slug', 'content')
+
+
+class TranslationInline(admin.StackedInline):
+    form = TranslationAdminForm
+    model = Translation
+    extra = 1
+    max_num = 4
 
 class PostAdmin(admin.ModelAdmin):
-    
-    form = PostAdminForm
 
-    list_display = ('title', 'author', 'created', 'updated')
+    inlines = [
+        TranslationInline,
+    ]
+
+    list_display = ('__unicode__', 'author', 'created', 'updated')
     list_filter = ('author', 'created', 'updated')
-    search_fields = ('title', 'author__username', 'content')
+    search_fields = ('author__username',)
 
 admin.site.register(Post, PostAdmin)
+admin.site.register(Comment)
 
