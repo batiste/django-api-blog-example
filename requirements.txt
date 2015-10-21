@@ -1,5 +1,13 @@
 Django==1.8.5
+Pillow==3.0.0
+Unidecode==0.04.18
+beautifulsoup4==4.4.1
 django-ckeditor==5.0.2
+django-filer==0.9.12
 django-flat-theme==1.1.1
+django-mptt==0.7.4
+django-polymorphic==0.7.2
 djangorestframework==3.2.4
+easy-thumbnails==2.2
+requests==2.8.1
 wsgiref==0.1.2

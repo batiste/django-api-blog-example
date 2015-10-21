@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block header %}
+
+<p class='lang-switch'>
+{% for trans in translation.post.translations %}
+<span><a href="{{ trans.get_url }}">{{ trans.language }}</a></span>
+{% endfor %}
+</p>
+
+<a href="/">Back to Homepage</a>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="post">
+  <h1>{{ translation.title }}</h1>
+  <p>Posted on {{ translation.post.created }} by {{ translation.post.author }}, last updated on {{ translation.post.updated }}</p>
+  <div class="content">
+  {{ translation.content|safe }}
+  </div>
+</div>
+
+{% endblock %}
+

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 import uuid
 
 LANGS = (
@@ -24,31 +25,27 @@ class Post(models.Model):
         ordering = ['-created']
 
     def __unicode__(self):
-        trans = Translation.objects.filter(language='en', post=self)
-        if len(trans):
-            return trans[0].title
+        trans = self.translation_for_lang('en')
+        if trans:
+            return trans.title
         return 'Unamed post from ' + self.author.username
 
-    def title(self):
-        trans = Translation.objects.filter(language='en', post=self)
+    def translation_for_lang(self, lang):
+        trans = Translation.objects.filter(language=lang, post=self)
         if len(trans):
-            return trans[0].title
-        return ''
+            return trans[0]
+        trans = Translation.objects.filter(post=self)
+        return trans[0]
 
-    def slug(self):
-        trans = Translation.objects.filter(language='en', post=self)
-        if len(trans):
-            return trans[0].slug
-        return ''
+    def translations(self):
+        return Translation.objects.filter(post=self)
 
-    def content(self):
-        trans = Translation.objects.filter(language='en', post=self)
-        if len(trans):
-            return trans[0].content
-        return ''
+    def get_absolute_url(self):
+        trans = self.translation_for_lang('en')
+        if not trans:
+            return '/'
+        return trans.get_absolute_url()
 
-    def url(self):
-        return 
 
 class Translation(models.Model):
 
@@ -62,6 +59,20 @@ class Translation(models.Model):
 
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    def get_absolute_url(self):
+        year = self.post.created.year
+        month = self.post.created.month
+        day = self.post.created.day
+        return reverse('post_details', kwargs={
+            'lang':self.language, 
+            'year':year,
+            'month':month, 
+            'day':day, 
+            'slug':self.slug})
+
+    def __unicode__(self):
+        return self.slug
 
 
 class Comment(models.Model):

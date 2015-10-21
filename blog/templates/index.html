@@ -1,40 +1,63 @@
-<html>
-    <head>
-    <link rel="stylesheet" type="text/css" href="https://bin.staticlocal.ch/local-ui/0.1.0/local-ui.min.css">
-    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="https://bin.staticlocal.ch/local-ui/0.1.0/local-ui.min.js"></script>
-    </head>
-    <style>
-      #main-container {
-        width: 900px;
-        margin: 0 auto;
-      }
-      .post {
-        margin-bottom: 2em;
-      }
-    </style>
-<body>
+{% extends "base.html" %}
 
-<div id="main-container">
-<a href="/admin/">Admin login: demo:demo</a>
 
-<div>
+{% block header %}
+<p class='lang-switch'>
+{% for lang in langs %}
+<span><a href="/{{ lang.0 }}/">{{ lang.0 }}</a></span>
+{% endfor %}
+</p>
+{% endblock %}
+
+
+{% block content %}
 
 <h1>Local.ch Blog</h1>
+
+{% if page.number > 1 %}
+<div class="pagination">
+    <span class="step-links">
+        {% if page.has_previous %}
+            <a href="?page={{ page.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page.number }} of {{ page.paginator.num_pages }}.
+        </span>
+
+        {% if page.has_next %}
+            <a href="?page={{ page.next_page_number }}">next</a>
+        {% endif %}
+    </span>
 </div>
+{% endif %}
 
 <div class="post">
-{% for post in posts %}
-  <h2><a href="/post/{{ post.slug }}">{{ post.title }}</a></h2>
-  <p>Posted on the {{ post.created }} by {{ post.author }}</p>
+{% for translation in translations %}
+  <h2><a href='{{ translation.get_absolute_url }}'>{{ translation.title }}</a></h2>
+  <p>Posted on the {{ translation.post.created }} by {{ translation.post.author }}</p>
 
   <div class="content">
-  {{ post.content|safe }}
+  {{ translation.content|safe }}
   </div>
 {% endfor %}
-<div>
-
 </div>
 
-</body>
-</html>
+<div class="pagination">
+    <span class="step-links">
+        {% if page.has_previous %}
+            <a href="?page={{ page.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page.number }} of {{ page.paginator.num_pages }}.
+        </span>
+
+        {% if page.has_next %}
+            <a href="?page={{ page.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
+
+{% endblock %}
+

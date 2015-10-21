@@ -2,9 +2,10 @@ from django.contrib import admin
 from blog.models import Post, Comment, Translation
 from django import forms
 from ckeditor.widgets import CKEditorWidget
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
 class TranslationAdminForm(forms.ModelForm):
-    content = forms.CharField(widget=CKEditorWidget())
+    content = forms.CharField(widget=CKEditorUploadingWidget())
     class Meta:
         model = Translation
         fields = ('language', 'title', 'slug', 'content')

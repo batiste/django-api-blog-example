@@ -34,13 +34,16 @@ INSTALLED_APPS = (
     'flat',
     'django.contrib.admin',
     'ckeditor',
+    'ckeditor_uploader',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'blog'
+    'blog',
+    #'filer',
+    #'easy_thumbnails',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -52,6 +55,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 )
 
 ROOT_URLCONF = 'demo.urls'
@@ -108,3 +112,5 @@ STATIC_ROOT = './staticfiles/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'blog/media/')
+
+CKEDITOR_UPLOAD_PATH = "ckeditor/"

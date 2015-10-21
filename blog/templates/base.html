@@ -1,0 +1,54 @@
+<html>
+    <head>
+    <link rel="stylesheet" type="text/css" href="https://bin.staticlocal.ch/local-ui/0.1.0/local-ui.min.css">
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://bin.staticlocal.ch/local-ui/0.1.0/local-ui.min.js"></script>
+    </head>
+    <style>
+      #main-container, #footer p {
+        width: 900px;
+        margin: 0 auto;
+        margin-top:10px;
+      }
+      .post {
+        margin-bottom: 2em;
+      }
+      .lang-switch, .admin-link {
+        float:right;
+        margin-right:1em;
+      }
+      .lang-switch span {
+        margin-right:4px;
+      }
+      body {
+        padding-top:2em;
+      }
+      #footer {
+        background:#e5e5e5;
+        padding:4em 0;
+      }
+      #header {
+        overflow: hidden;
+      }
+    </style>
+<body>
+
+<div id="main-container">
+
+<div id="header">
+  <a href="/admin/" class="admin-link">Admin login: demo:demo</a>
+  {% block header %}
+  {% endblock %}
+</div>
+
+{% block content %}
+{% endblock %}
+
+</div>
+
+<div id="footer">
+      <p>© local.ch ag - Konradstrasse 12/14 - 8005 Zürich - E-Mail: info@local.ch - Tel: +41 44 309 10 40</p> 
+</div>
+
+</body>
+</html>

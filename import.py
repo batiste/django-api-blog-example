@@ -69,6 +69,14 @@ def extract_article_data(url):
         lang_urls[link.get_text().lower()] = link['href']
 
     content_node = byClass(soup, 'div', 'content')[0]
+    for link in content_node.find_all('a'):
+        if link.has_key('href'):
+            if link['href'].startswith('http://static.blog.local.ch/'):
+                filename = link['href'].split('/')[-1:][0]
+                link['href'] = '/media/images/' + filename
+            if link['href'].startswith('http://blog.local.ch/'):
+                link['href'] = link['href'].replace('http://blog.local.ch/', '/')
+
     extract_images(content_node)
     content = ""
     for child in content_node.children:
@@ -124,12 +132,15 @@ def process_article(url):
         trans.save()
 
     for lang in ['fr', 'de', 'it']:
+        url = data['lang_urls'][lang]
         try:
             trans = Translation.objects.get(post=post, language=lang)
-            trans.content = content
-            trans.save()
+            if(len(url) > 30):
+                data = extract_article_data(url)
+                if(data):
+                    trans.content = data['content']
+                    trans.save()
         except Translation.DoesNotExist:
-            url = data['lang_urls'][lang]
             if(len(url) > 30):
                 data = extract_article_data(url)
                 trans = Translation(post=post, content=data['content'], title=data['title'], slug=data['slug'], language=lang)
